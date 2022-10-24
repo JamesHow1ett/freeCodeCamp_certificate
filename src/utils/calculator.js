@@ -11,6 +11,8 @@ const MATHS = {
   "*": (a, b) => a * b,
 };
 
+export const invertNumber = (number) => number * -1;
+
 const OPERATORS_PRIORITY = {
   "/": 2,
   "*": 2,
@@ -34,21 +36,42 @@ function calculateReversePolishNotation(rpn) {
   const LAST_TWO_ITEMS = -2;
   const stack = [];
 
-  rpn.forEach((char) => {
+  let i = 0;
+  while (i < rpn.length) {
+    const char = rpn[i];
+
     if (typeof char === "number") {
       stack.push(char);
+      i += 1;
     }
 
     if (isOperator(char)) {
-      const math = MATHS[char];
-      const [a, b] = stack.splice(LAST_TWO_ITEMS);
-      const result = math(a, b);
+      if (stack.length > 1) {
+        const math = MATHS[char];
+        const [a, b] = stack.splice(LAST_TWO_ITEMS);
+        const result = math(a, b);
 
-      stack.push(result);
+        stack.push(result);
+        i += 1;
+      } else if (char === "-") {
+        const [a] = stack.splice(-1);
+        const result = invertNumber(a);
+
+        stack.push(result);
+        i += 1;
+      } else {
+        const nextChar = rpn[i + 1];
+
+        if (typeof nextChar === "number") {
+          stack.push(nextChar);
+        }
+
+        rpn.splice(i + 1, 1);
+      }
     }
-  });
+  }
 
-  const result = Number(stack.pop()).toPrecision(2);
+  const result = Number(stack.pop()).toPrecision(4);
 
   return Number(result);
 }

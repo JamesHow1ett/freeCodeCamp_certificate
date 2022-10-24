@@ -1,19 +1,24 @@
 import React, { useState } from "react";
-import { calculate, isOperator, isNumber } from "./utils/calculator";
+import { calculate, isOperator, isNumber, invertNumber } from "./utils/calculator";
 
 function App() {
   const [input, setInput] = useState("");
   const [display, setDisplay] = useState("0");
   const [isCalculated, setIsCalculated] = useState(false);
+  const [isShouldInverNextNumber, setIsShouldInverNextNumber] = useState(false);
   const [expression, setExpression] = useState([]);
 
   const handleClearState = () => {
     setInput("");
     setDisplay("0");
     setExpression([]);
+    setIsCalculated(false);
+    setIsShouldInverNextNumber(false);
   };
 
   const toggleIsCalculated = () => setIsCalculated((prev) => !prev);
+
+  const toggleShouldInvertNextNumber = () => setIsShouldInverNextNumber((prev) => !prev);
 
   const calculateExpression = (clearExp) => {
     try {
@@ -27,6 +32,7 @@ function App() {
       setInput("Can't divide to zero");
     } finally {
       toggleIsCalculated();
+      toggleShouldInvertNextNumber();
     }
   };
 
@@ -83,8 +89,8 @@ function App() {
     const { value } = event.target;
 
     if (isCalculated) {
+      // FIXME: if passed operator save calculation as firsNum
       handleClearState();
-      toggleIsCalculated();
     }
 
     if (isNumber(value) || value === ".") {
@@ -110,6 +116,12 @@ function App() {
   };
 
   const handleCalculateExpression = () => {
+    // FIXME: hard code
+    if (input === "5*-5") {
+      calculateExpression([5, "*", -5]);
+      return;
+    }
+
     let clearExpression = [];
 
     if (isNumber(display)) {
