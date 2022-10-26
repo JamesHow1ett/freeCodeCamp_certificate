@@ -6,6 +6,7 @@ export const INITIAL_STATE = {
   isRunning: false,
   isSessionStarted: false,
   isBreakStarted: false,
+  isOver: false,
   sessionLength: 25,
   breakLength: 5,
   timerTitle: SESSION_TITLE,

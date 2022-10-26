@@ -1,4 +1,5 @@
-import React from "react";
+/* eslint-disable jsx-a11y/media-has-caption */
+import React, { useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -19,6 +20,7 @@ import {
   refreshTimer,
 } from "./features/timer";
 
+import beep from "./assets/beep.ogg";
 import "./App.css";
 
 const ArrowDownIcon = <FontAwesomeIcon icon={faArrowDown} size="2x" />;
@@ -32,11 +34,19 @@ const StartStopIcon = (
 const ResetIcon = <FontAwesomeIcon icon={faRefresh} size="2x" />;
 
 function App() {
-  const { timerTitle, timeLeftParsed, breakLength, sessionLength, isRunning } = useSelector(
-    (state) => state.timer,
-  );
-
+  const {
+    timerTitle,
+    timeLeftParsed,
+    timeLeft,
+    breakLength,
+    sessionLength,
+    isRunning,
+    isBreakStarted,
+    isSessionStarted,
+    isOver,
+  } = useSelector((state) => state.timer);
   const dispatch = useDispatch();
+  const audioRef = useRef();
 
   const decrementBreak = () => dispatch(decrementBreakLength());
   const incrementBreak = () => dispatch(incrementBreakLength());
@@ -57,7 +67,24 @@ function App() {
     dispatch(startTimer(interval));
   };
 
-  const reset = () => dispatch(refreshTimer());
+  const reset = () => {
+    dispatch(refreshTimer());
+    audioRef.current.pause();
+    audioRef.current.currentTime = 0;
+  };
+
+  if (isOver) {
+    if (audioRef.current.canPlayType("audio/ogg")) {
+      audioRef.current.play();
+
+      if (audioRef.current.currentTime > 2) {
+        audioRef.current.pause();
+        audioRef.current.currentTime = 0;
+      }
+    }
+  }
+
+  const isLessThanMinute = (isBreakStarted || isSessionStarted) && timeLeft.minutes <= 0;
 
   return (
     <div className="container">
@@ -110,7 +137,7 @@ function App() {
           </div>
         </div>
         <div className="timer">
-          <div className="timer-wrapper">
+          <div className="timer-wrapper" style={{ color: isLessThanMinute ? "#a50d0d" : "#fff" }}>
             <div id="timer-label">{timerTitle}</div>
             <div id="time-left">{timeLeftParsed}</div>
           </div>
@@ -124,6 +151,9 @@ function App() {
           </button>
         </div>
       </div>
+      <audio id="beep" ref={audioRef}>
+        <source src={beep} type="audio/ogg" />
+      </audio>
     </div>
   );
 }

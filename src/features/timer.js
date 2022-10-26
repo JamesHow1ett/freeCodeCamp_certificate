@@ -18,15 +18,15 @@ const timerSlice = createSlice({
       }
 
       state.breakLength -= 1;
-      state.timeLeft.seconds = 0;
     },
     incrementBreakLength(state) {
       if (state.isRunning) {
         return;
       }
 
-      state.breakLength += 1;
-      state.timeLeft.seconds = 0;
+      if (state.breakLength < 60) {
+        state.breakLength += 1;
+      }
     },
     decrementSessionLength(state) {
       if (state.isRunning) {
@@ -40,9 +40,12 @@ const timerSlice = createSlice({
 
       state.sessionLength -= 1;
 
+      if (state.isBreakStarted) {
+        return;
+      }
+
       state.timeLeft.minutes = state.sessionLength;
       state.timeLeft.seconds = 0;
-
       state.timeLeftParsed = timeLeftParser(state.timeLeft);
     },
     incrementSessionLength(state) {
@@ -50,11 +53,16 @@ const timerSlice = createSlice({
         return;
       }
 
-      state.sessionLength += 1;
+      if (state.sessionLength < 60) {
+        state.sessionLength += 1;
+      }
+
+      if (state.isBreakStarted) {
+        return;
+      }
 
       state.timeLeft.minutes = state.sessionLength;
       state.timeLeft.seconds = 0;
-
       state.timeLeftParsed = timeLeftParser(state.timeLeft);
     },
     startTimer(state, action) {
@@ -67,10 +75,34 @@ const timerSlice = createSlice({
       }
     },
     stopTimer(state) {
-      state.isRunning = false;
       clearInterval(state.intervalId);
+      state.isRunning = false;
     },
     tickTimer(state) {
+      if (state.isRunning && state.isOver && state.isSessionStarted) {
+        state.isBreakStarted = true;
+        state.timerTitle = BREAK_TITLE;
+        state.timeLeft.minutes = state.breakLength;
+        state.timeLeft.seconds = 0;
+        state.isSessionStarted = false;
+        state.isOver = false;
+        state.timeLeftParsed = timeLeftParser(state.timeLeft);
+
+        return;
+      }
+
+      if (state.isRunning && state.isOver && state.isBreakStarted) {
+        state.isSessionStarted = true;
+        state.timerTitle = SESSION_TITLE;
+        state.timeLeft.minutes = state.sessionLength;
+        state.timeLeft.seconds = 0;
+        state.isBreakStarted = false;
+        state.isOver = false;
+        state.timeLeftParsed = timeLeftParser(state.timeLeft);
+
+        return;
+      }
+
       if (state.timeLeft.minutes >= 0 && state.timeLeft.seconds > 0) {
         state.timeLeft.seconds -= 1;
       } else if (state.timeLeft.minutes > 0 && state.timeLeft.seconds === 0) {
@@ -79,32 +111,7 @@ const timerSlice = createSlice({
       } else {
         state.timeLeft.minutes = 0;
         state.timeLeft.seconds = 0;
-      }
-
-      if (
-        state.isRunning &&
-        state.isSessionStarted &&
-        state.timeLeft.minutes === 0 &&
-        state.timeLeft.seconds === 0
-      ) {
-        state.timeLeft.minutes = state.breakLength;
-        state.timeLeft.seconds = 0;
-        state.timerTitle = BREAK_TITLE;
-        state.isSessionStarted = false;
-        state.isBreakStarted = true;
-      }
-
-      if (
-        state.isRunning &&
-        state.isBreakStarted &&
-        state.timeLeft.minutes === 0 &&
-        state.timeLeft.seconds === 0
-      ) {
-        state.timeLeft.minutes = state.sessionLength;
-        state.timeLeft.seconds = 0;
-        state.timerTitle = SESSION_TITLE;
-        state.isSessionStarted = true;
-        state.isBreakStarted = false;
+        state.isOver = true;
       }
 
       state.timeLeftParsed = timeLeftParser(state.timeLeft);
