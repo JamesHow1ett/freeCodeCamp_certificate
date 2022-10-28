@@ -1,7 +1,7 @@
 body {
-  background: #1e555c;
-  color: white;
-  font-size: 30px;
+  background-color: #8d8d8d;
+  color: black;
+  font-weight: bold;
   text-align: center;
 }
 
@@ -12,57 +12,81 @@ body {
   align-items: center;
 }
 
-.main-title {
-  font-size: 50px;
-  margin-bottom: 20px;
+.inner-container {
+  outline: 5px solid orange;
+  position: relative;
+  width: 660px;
+  text-align: center;
+  background-color: #b3b3b3;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
 }
 
-.container button {
-  background: none;
-  outline: none;
-  border: none;
-  color: white;
-  cursor: pointer;
-}
-
-.container .btn-level {
+.inner-container .pad-bank {
+  width: 332px;
+  height: 272px;
   display: inline-block;
 }
 
-.container .length-controls-wrapper {
+.inner-container .controls-container {
+  width: 240px;
   display: flex;
-  column-gap: 50px;
+  flex-direction: column;
 }
 
-.container .length-control {
-  width: 250px;
+.inner-container .controls-container .control {
+  width: 100px;
+  margin: auto;
 }
 
-.container .timer {
-  border: 7px solid #13353a;
-  margin: 20px auto 10px auto;
-  width: 270px;
-  height: 160px;
-  border-radius: 50px;
+.inner-container .controls-container .control p {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.inner-container .controls-container .control .select {
+  margin: auto;
+  border: 1px solid black;
+  width: 50px;
+  height: 20px;
+  padding: 1px;
+  background-color: black;
+}
+
+.inner-container .controls-container .control .select .inner {
+  width: 23px;
+  height: 19px;
+  background: blue;
+  border: 1px solid black;
+  box-sizing: border-box;
+  cursor: pointer;
+}
+
+.inner-container .controls-container [type="range"] {
+  -webkit-appearance: none;
+  margin: 12.5px 0;
+  width: 100%;
+}
+
+.inner-container .controls-container #display {
+  width: 200px;
+  background-color: gray;
+  margin: 15px auto;
+  padding: 15px;
+  box-sizing: border-box;
+  min-height: 52px;
+}
+
+.inner-container .pad-bank .drum-pad {
   position: relative;
-}
-
-.container .timer .timer-wrapper {
-  position: absolute;
-  width: 190px;
-  height: 110px;
-  left: 50%;
-  top: 50%;
-  margin-left: -95px;
-  margin-top: -57px;
-}
-
-.container .timer #time-left {
-  font-family: digital;
-  font-size: 80px;
-}
-
-#break-length,
-#session-length {
-  min-width: 35px;
+  float: left;
+  width: 100px;
+  height: 80px;
+  margin-right: 10px;
+  border-radius: 5px;
+  padding-top: 35px;
+  box-sizing: border-box;
+  cursor: pointer;
 }
