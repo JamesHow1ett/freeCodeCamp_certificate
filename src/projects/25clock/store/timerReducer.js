@@ -1,7 +1,7 @@
 /* eslint-disable no-param-reassign */
 import { createSlice } from "@reduxjs/toolkit";
-import { timeLeftParser } from "./utils";
-import { SESSION_TITLE, BREAK_TITLE, INITIAL_STATE } from "./constants";
+import { timeLeftParser } from "./utils/utils";
+import { SESSION_TITLE, BREAK_TITLE, INITIAL_STATE } from "./utils/constants";
 
 const timerSlice = createSlice({
   name: "timer",
