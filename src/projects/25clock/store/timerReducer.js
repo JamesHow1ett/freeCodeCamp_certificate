@@ -1,4 +1,3 @@
-/* eslint-disable no-param-reassign */
 import { createSlice } from "@reduxjs/toolkit";
 import { timeLeftParser } from "./utils/utils";
 import { SESSION_TITLE, BREAK_TITLE, INITIAL_STATE } from "./utils/constants";

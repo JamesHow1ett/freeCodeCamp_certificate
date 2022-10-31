@@ -17,6 +17,7 @@ function MainLayout({ children }) {
       <h1>Some tests</h1>
       <select onChange={handleSelect} value={selectedProject}>
         <option value="/app">None</option>
+        <option value="/app/markdown-previewer">Markdowm Previewer</option>
         <option value="/app/25-clock">25 + 5 Clock</option>
       </select>
       <br />

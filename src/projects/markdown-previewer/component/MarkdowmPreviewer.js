@@ -1,23 +1,15 @@
 import React from "react";
-import "./styles/index.css";
+import { useSelector } from "react-redux";
+import TextContainer from "./TextContainer";
 
 function MarkdowmPreviewer() {
-  const [text, setText] = useState(defaultMd);
-
-  const handleSetText = (e) => {
-    setText(e.target.value);
-  };
+  const { isExpandedPreview } = useSelector((store) => store.markdown);
 
   return (
     <div className="flex flex-col items-center py-6 bg-teal-300">
-      <TextContainer
-        title="Editor"
-        markdownText={text}
-        isPreview={false}
-        onChange={handleSetText}
-      />
+      {!isExpandedPreview && <TextContainer title="Editor" isPreview={false} />}
       <div className="py-6" />
-      <TextContainer title="Previewer" markdownText={text} isPreview />
+      <TextContainer title="Previewer" isPreview />
     </div>
   );
 }
