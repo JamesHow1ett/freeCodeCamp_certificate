@@ -1,21 +1,17 @@
 {
-  "parser": "@babel/eslint-parser",
-  "settings": {
-    "react": {
-      "version": "detect"
-    }
-  },
-  "env": {
-    "browser": true,
-    "es2021": true
-  },
-  "extends": ["plugin:react/recommended", "airbnb", "prettier"],
-  "parserOptions": {
-    "sourceType": "module"
-  },
+  "extends": ["react-app", "react-app/jest", "airbnb", "plugin:jsx-a11y/recommended", "prettier"],
+  "plugins": ["jsx-a11y", "prettier"],
   "rules": {
-    "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
+    "import/prefer-default-export": "off",
+    "no-param-reassign": "off",
     "no-unused-vars": "warn",
-    "import/prefer-default-export": "off"
+    "semi": "warn",
+    "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
+    "prettier/prettier": [
+      "warn",
+      {
+        "semi": true
+      }
+    ]
   }
 }
