@@ -1,9 +1,8 @@
-/* eslint-disable no-param-reassign */
 import { createSlice } from "@reduxjs/toolkit";
 import { parseIdToDisplayName } from "../utils/utils";
 
-const appSlice = createSlice({
-  name: "app",
+const drumSlice = createSlice({
+  name: "drum",
   initialState: {
     isPowerOn: true,
     volume: 0.3,
@@ -23,6 +22,6 @@ const appSlice = createSlice({
   },
 });
 
-export const { setDisplay, tooglePowerOn, setVolume } = appSlice.actions;
+export const { setDisplay, tooglePowerOn, setVolume } = drumSlice.actions;
 
-export default appSlice.reducer;
+export default drumSlice.reducer;
