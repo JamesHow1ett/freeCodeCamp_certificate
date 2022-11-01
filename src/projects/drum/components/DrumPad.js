@@ -7,9 +7,9 @@ import { setDisplay, tooglePowerOn, setVolume } from "../store/drumReducer";
 import { useEventListener } from "../hooks/useEventListener";
 import { availableKeys } from "../utils/utils";
 
-// import "./App.css";
-
-const btnStyles = { backgroundColor: "grey", marginTop: "10px", boxShadow: "black 3px 3px 5px" };
+const TIME_TO_REMOVE_ACTIVE_CLASS = 300;
+const btnStyles =
+  "bg-stone-500 mt-3 relative float-left w-[80px] h-[80px] mr-3 rounded-lg pt-[32px] cursor-pointer shadow-xl";
 
 function DrumPad() {
   const { isPowerOn, display, volume } = useSelector((store) => store.drum);
@@ -24,14 +24,20 @@ function DrumPad() {
       }
 
       const audio = document.getElementById(audioId);
-      const displayName = audio.parentNode.id;
-      dispatch(setDisplay(displayName));
+      const button = audio.parentNode;
 
       audio.currentTime = 0;
       audio.volume = volume;
       audio.play();
+      button.classList.add("!bg-orange-400");
+
+      dispatch(setDisplay(button.id));
+
+      setTimeout(() => {
+        button.classList.remove("!bg-orange-400");
+      }, TIME_TO_REMOVE_ACTIVE_CLASS);
     },
-    [dispatch, setDisplay, volume],
+    [dispatch, volume],
   );
 
   useEventListener("keyup", handlerDrumKeyUp);
@@ -41,27 +47,39 @@ function DrumPad() {
       return;
     }
 
-    if (e.target.classList.contains("pad-bank")) {
+    if (e.target.dataset.padWrapper) {
       return;
     }
 
-    const audio = e.target.firstChild;
+    const button = e.target;
+    const audio = button.firstChild;
+
     audio.currentTime = 0;
     audio.volume = volume;
     audio.play();
+    button.classList.add("!bg-orange-400");
 
-    dispatch(setDisplay(e.target.id));
+    dispatch(setDisplay(button.id));
+
+    setTimeout(() => {
+      button.classList.remove("!bg-orange-400");
+    }, TIME_TO_REMOVE_ACTIVE_CLASS);
   };
 
-  const handlerVolumeChange = (e) => {
-    dispatch(setVolume(e.target.value));
-  };
+  const handlerVolumeChange = (e) => dispatch(setVolume(e.target.value));
 
   return (
-    <div id="drum-machine" className="container">
-      <div className="inner-container">
-        <div className="pad-bank" onClick={handlerDrumClick}>
-          <div className="drum-pad" id="Heater-1" style={btnStyles}>
+    <div
+      id="drum-machine"
+      className="bg-[#8d8d8d] text-black font-bold text-center flex justify-center items-center h-screen"
+    >
+      <div className="outline outline-8 outline-orange-600 p-[20px] relative text-center bg-[#b3b3b3] flex justify-between items-center">
+        <div
+          className="w-[332px] h-[272px] inline-block"
+          data-pad-wrapper="true"
+          onClick={handlerDrumClick}
+        >
+          <div className={btnStyles} id="Heater-1">
             <audio
               className="clip"
               id="Q"
@@ -69,7 +87,7 @@ function DrumPad() {
             />
             Q
           </div>
-          <div className="drum-pad" id="Heater-2" style={btnStyles}>
+          <div className={btnStyles} id="Heater-2">
             <audio
               className="clip"
               id="W"
@@ -77,7 +95,7 @@ function DrumPad() {
             />
             W
           </div>
-          <div className="drum-pad" id="Heater-3" style={btnStyles}>
+          <div className={btnStyles} id="Heater-3">
             <audio
               className="clip"
               id="E"
@@ -85,7 +103,7 @@ function DrumPad() {
             />
             E
           </div>
-          <div className="drum-pad" id="Heater-4" style={btnStyles}>
+          <div className={btnStyles} id="Heater-4">
             <audio
               className="clip"
               id="A"
@@ -93,7 +111,7 @@ function DrumPad() {
             />
             A
           </div>
-          <div className="drum-pad" id="Clap" style={btnStyles}>
+          <div className={btnStyles} id="Clap">
             <audio
               className="clip"
               id="S"
@@ -101,7 +119,7 @@ function DrumPad() {
             />
             S
           </div>
-          <div className="drum-pad" id="Open-HH" style={btnStyles}>
+          <div className={btnStyles} id="Open-HH">
             <audio
               className="clip"
               id="D"
@@ -109,7 +127,7 @@ function DrumPad() {
             />
             D
           </div>
-          <div className="drum-pad" id="Kick-n'-Hat" style={btnStyles}>
+          <div className={btnStyles} id="Kick-n'-Hat">
             <audio
               className="clip"
               id="Z"
@@ -117,7 +135,7 @@ function DrumPad() {
             />
             Z
           </div>
-          <div className="drum-pad" id="Kick" style={btnStyles}>
+          <div className={btnStyles} id="Kick">
             <audio
               className="clip"
               id="X"
@@ -125,7 +143,7 @@ function DrumPad() {
             />
             X
           </div>
-          <div className="drum-pad" id="Closed-HH" style={btnStyles}>
+          <div className={btnStyles} id="Closed-HH">
             <audio
               className="clip"
               id="C"
@@ -134,12 +152,12 @@ function DrumPad() {
             C
           </div>
         </div>
-        <div className="controls-container">
-          <div className="control">
-            <p htmlFor="powerOn">Power</p>
-            <div className="select">
+        <div className="flex flex-col items-center gap-[20px] w-[240px]">
+          <div className="flex flex-col items-center w-[100px]">
+            <p className="mt-0 mb-0">Power</p>
+            <div className="w-[50px] p-1 bg-black">
               <div
-                className="inner"
+                className="bg-blue-600 border border-black w-[23px] h-[19px]"
                 role="button"
                 tabIndex={0}
                 aria-label="power On/Off"
@@ -148,9 +166,14 @@ function DrumPad() {
               />
             </div>
           </div>
-          <p id="display">{display}</p>
-          <div className="volume-slider">
-            {typeof volume && volume}
+          <p
+            id="display"
+            className="w-[200px] bg-gray-500 m-4 mx-auto text-center py-2 min-h-[40px]"
+          >
+            {display}
+          </p>
+          <div className="flex gap-2">
+            <span className="w-[25px]">{volume}</span>
             <input
               max="1"
               min="0"
