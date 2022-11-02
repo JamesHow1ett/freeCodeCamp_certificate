@@ -22,7 +22,9 @@ const OPERATORS_PRIORITY = {
 
 const opPreced = (op) => OPERATORS_PRIORITY[op];
 
-export const isOperator = (char) => Object.keys(OPERATORS_PRIORITY).includes(char);
+const OPERATORS = Object.keys(OPERATORS_PRIORITY);
+
+export const isOperator = (char) => OPERATORS.includes(char);
 
 export const isNumber = (char) =>
   typeof parseFloat(char) === "number" && !Number.isNaN(parseFloat(char));
@@ -107,11 +109,11 @@ function parseExpression(expression) {
 
 /**
  * Calculate user input
- * @param {Array} userInput
+ * @param {Array} expression
  * @returns {Number}
  */
-export function calculate(userInput) {
-  const rpn = parseExpression(userInput);
+export function calculate(expression) {
+  const rpn = parseExpression(expression);
   const result = calculateReversePolishNotation(rpn);
 
   return result;

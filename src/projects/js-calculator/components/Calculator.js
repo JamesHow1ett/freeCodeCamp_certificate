@@ -1,239 +1,184 @@
-import React, { useState } from "react";
-import { calculate, isOperator, isNumber, invertNumber } from "../utils/calculator";
+import React from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { clearState, setInput, calculateExpression } from "../store/calculatorReducer";
+
+const defaultBtnClasses =
+  "relative h-[65px] w-[80px] text-white outline outline-1 outline-black border-none bg-[#4d4d4d] font-mono text-xl cursor-default hover:text-black hover:outline hover:outline-[0.05rem] hover:outline-[#808080] hover:z-[3]";
 
 function Calculator() {
-  const [input, setInput] = useState("");
-  const [display, setDisplay] = useState("0");
-  const [isCalculated, setIsCalculated] = useState(false);
-  const [isShouldInverNextNumber, setIsShouldInverNextNumber] = useState(false);
-  const [expression, setExpression] = useState([]);
+  const { input, display } = useSelector((store) => store.calculator);
+  const dispatch = useDispatch();
 
-  const handleClearState = () => {
-    setInput("");
-    setDisplay("0");
-    setExpression([]);
-    setIsCalculated(false);
-    setIsShouldInverNextNumber(false);
-  };
+  const handleClearState = () => dispatch(clearState());
 
-  const toggleIsCalculated = () => setIsCalculated((prev) => !prev);
+  const handleInput = (event) => dispatch(setInput(event.target.value));
 
-  const toggleShouldInvertNextNumber = () => setIsShouldInverNextNumber((prev) => !prev);
-
-  const calculateExpression = (clearExp) => {
-    try {
-      const result = calculate(clearExp);
-      const resultInput = `=${result}`;
-
-      setDisplay(result.toString());
-      setInput(`${clearExp.join("")}${resultInput}`);
-    } catch (error) {
-      setDisplay(error.message);
-      setInput("Can't divide to zero");
-    } finally {
-      toggleIsCalculated();
-      toggleShouldInvertNextNumber();
-    }
-  };
-
-  const addOperator = (operator) => {
-    setExpression((prev) => {
-      const lastItem = prev[prev.length - 1];
-
-      if (lastItem && isOperator(lastItem)) {
-        const expressionCopy = [...prev];
-        expressionCopy.splice(-1, 1, operator);
-
-        return expressionCopy;
-      }
-
-      return [...prev, operator];
-    });
-
-    setDisplay(operator);
-    setInput((prev) => prev + operator);
-  };
-
-  const addNumber = (char) => {
-    if (char === "." && display.includes(".")) {
-      return;
-    }
-
-    if (display === "0" && char === "0") {
-      return;
-    }
-
-    if (isOperator(display) && char === "0") {
-      setDisplay("0");
-      return;
-    }
-
-    if (display === "0" && char === ".") {
-      setDisplay("0.");
-      setInput((prev) => `${prev}0.`);
-      return;
-    }
-
-    setDisplay((prev) => {
-      if (prev === "0" || isOperator(prev)) {
-        return char;
-      }
-
-      return prev + char;
-    });
-
-    setInput((prev) => prev + char);
-  };
-
-  const handleInput = (event) => {
-    const { value } = event.target;
-
-    if (isCalculated) {
-      // FIXME: if passed operator save calculation as firsNum
-      handleClearState();
-    }
-
-    if (isNumber(value) || value === ".") {
-      addNumber(value);
-    }
-
-    if (isOperator(value)) {
-      if (display === "0.") {
-        setExpression((prev) => [...prev, 0]);
-      } else if (isOperator(display)) {
-        setExpression((prev) => {
-          const expressionCopy = [...prev];
-          expressionCopy.splice(-1, 1);
-
-          return expressionCopy;
-        });
-      } else {
-        setExpression((prev) => [...prev, parseFloat(display)]);
-      }
-
-      addOperator(value);
-    }
-  };
-
-  const handleCalculateExpression = () => {
-    // FIXME: hard code
-    if (input === "5*-5") {
-      calculateExpression([5, "*", -5]);
-      return;
-    }
-
-    let clearExpression = [];
-
-    if (isNumber(display)) {
-      clearExpression = [...expression, parseFloat(display)];
-
-      setExpression((prev) => [...prev, parseFloat(display)]);
-    }
-
-    if (isOperator(display)) {
-      clearExpression = [...expression];
-      clearExpression.splice(-1);
-      setExpression(clearExpression);
-    }
-
-    calculateExpression(clearExpression);
-  };
+  const handleCalculateExpression = () => dispatch(calculateExpression());
 
   return (
-    <div className="calculator">
-      <div className="formulaScreen">{input}</div>
-      <div id="display" className="outputScreen">
-        {display}
-      </div>
-      <div>
-        <button
-          type="button"
-          className="jumbo"
-          id="clear"
-          value="AC"
-          style={{ background: "#ac3939" }}
-          onClick={handleClearState}
-        >
-          AC
-        </button>
-        <button
-          type="button"
-          id="divide"
-          value="/"
-          style={{ background: "#666" }}
-          onClick={handleInput}
-        >
-          /
-        </button>
-        <button
-          type="button"
-          id="multiply"
-          value="*"
-          style={{ background: "#666" }}
-          onClick={handleInput}
-        >
-          x
-        </button>
-        <button type="button" id="seven" value="7" onClick={handleInput}>
-          7
-        </button>
-        <button type="button" id="eight" value="8" onClick={handleInput}>
-          8
-        </button>
-        <button type="button" id="nine" value="9" onClick={handleInput}>
-          9
-        </button>
-        <button
-          type="button"
-          id="subtract"
-          value="-"
-          style={{ background: "#666" }}
-          onClick={handleInput}
-        >
-          ‑
-        </button>
-        <button type="button" id="four" value="4" onClick={handleInput}>
-          4
-        </button>
-        <button type="button" id="five" value="5" onClick={handleInput}>
-          5
-        </button>
-        <button type="button" id="six" value="6" onClick={handleInput}>
-          6
-        </button>
-        <button
-          type="button"
-          id="add"
-          value="+"
-          style={{ background: "#666" }}
-          onClick={handleInput}
-        >
-          +
-        </button>
-        <button type="button" id="one" value="1" onClick={handleInput}>
-          1
-        </button>
-        <button type="button" id="two" value="2" onClick={handleInput}>
-          2
-        </button>
-        <button type="button" id="three" value="3" onClick={handleInput}>
-          3
-        </button>
-        <button type="button" className="jumbo" id="zero" value="0" onClick={handleInput}>
-          0
-        </button>
-        <button type="button" id="decimal" value="." onClick={handleInput}>
-          .
-        </button>
-        <button
-          type="button"
-          id="equals"
-          value="="
-          style={{ background: "#004466", position: "absolute", height: "130px", bottom: "5px" }}
-          onClick={handleCalculateExpression}
-        >
-          =
-        </button>
+    <div className="w-full h-screen bg-[#c2c2d6] flex justify-center items-center">
+      <div className="w-[333px] border-2 border-[#47476b] p-1 bg-black relative">
+        <div className="min-h-[30px] font-mono text-xl text-orange-500 text-right align-top break">
+          {input}
+        </div>
+        <div id="display" className="text-[29px] text-white text-right">
+          {display}
+        </div>
+        <div>
+          <button
+            className={`${defaultBtnClasses} w-[160px] bg-[#ac3939]`}
+            type="button"
+            id="clear"
+            value="AC"
+            onClick={handleClearState}
+          >
+            AC
+          </button>
+          <button
+            className={`${defaultBtnClasses} bg-[#666666]`}
+            type="button"
+            id="divide"
+            value="/"
+            onClick={handleInput}
+          >
+            /
+          </button>
+          <button
+            className={`${defaultBtnClasses} bg-[#666666]`}
+            type="button"
+            id="multiply"
+            value="*"
+            onClick={handleInput}
+          >
+            x
+          </button>
+          <button
+            className={defaultBtnClasses}
+            type="button"
+            id="seven"
+            value="7"
+            onClick={handleInput}
+          >
+            7
+          </button>
+          <button
+            className={defaultBtnClasses}
+            type="button"
+            id="eight"
+            value="8"
+            onClick={handleInput}
+          >
+            8
+          </button>
+          <button
+            className={defaultBtnClasses}
+            type="button"
+            id="nine"
+            value="9"
+            onClick={handleInput}
+          >
+            9
+          </button>
+          <button
+            className={`${defaultBtnClasses} bg-[#666666]`}
+            type="button"
+            id="subtract"
+            value="-"
+            onClick={handleInput}
+          >
+            ‑
+          </button>
+          <button
+            className={defaultBtnClasses}
+            type="button"
+            id="four"
+            value="4"
+            onClick={handleInput}
+          >
+            4
+          </button>
+          <button
+            className={defaultBtnClasses}
+            type="button"
+            id="five"
+            value="5"
+            onClick={handleInput}
+          >
+            5
+          </button>
+          <button
+            className={defaultBtnClasses}
+            type="button"
+            id="six"
+            value="6"
+            onClick={handleInput}
+          >
+            6
+          </button>
+          <button
+            className={`${defaultBtnClasses} bg-[#666666]`}
+            type="button"
+            id="add"
+            value="+"
+            onClick={handleInput}
+          >
+            +
+          </button>
+          <button
+            className={defaultBtnClasses}
+            type="button"
+            id="one"
+            value="1"
+            onClick={handleInput}
+          >
+            1
+          </button>
+          <button
+            className={defaultBtnClasses}
+            type="button"
+            id="two"
+            value="2"
+            onClick={handleInput}
+          >
+            2
+          </button>
+          <button
+            className={defaultBtnClasses}
+            type="button"
+            id="three"
+            value="3"
+            onClick={handleInput}
+          >
+            3
+          </button>
+          <button
+            className={`${defaultBtnClasses} w-[160px]`}
+            type="button"
+            id="zero"
+            value="0"
+            onClick={handleInput}
+          >
+            0
+          </button>
+          <button
+            className={defaultBtnClasses}
+            type="button"
+            id="decimal"
+            value="."
+            onClick={handleInput}
+          >
+            .
+          </button>
+          <button
+            className={`${defaultBtnClasses} bg-[#004466] !absolute h-[130px] bottom-[5px]`}
+            type="button"
+            id="equals"
+            value="="
+            onClick={handleCalculateExpression}
+          >
+            =
+          </button>
+        </div>
       </div>
     </div>
   );

@@ -9,6 +9,7 @@ const { MarkdowmPreviewerApp } = lazyImport(
   "MarkdowmPreviewerApp",
 );
 const { DrumApp } = lazyImport(() => import("../projects/drum"), "DrumApp");
+const { CalculatorApp } = lazyImport(() => import("../projects/js-calculator"), "CalculatorApp");
 
 function App() {
   return (
@@ -28,6 +29,7 @@ export const publicRoutes = [
       { path: "/app/25-clock", element: <ClockApp /> },
       { path: "/app/markdown-previewer", element: <MarkdowmPreviewerApp /> },
       { path: "/app/drum-pad", element: <DrumApp /> },
+      { path: "/app/js-calculator", element: <CalculatorApp /> },
     ],
   },
 ];
