@@ -48,6 +48,7 @@ function MainLayout({ children }) {
             onChange={handleSelect}
           >
             <option value="/app">None</option>
+            <option value="/app/random-quotes">Random Quotes</option>
             <option value="/app/markdown-previewer">Markdowm Previewer</option>
             <option value="/app/drum-pad">Drum Pad</option>
             <option value="/app/js-calculator">JS Calculator</option>
