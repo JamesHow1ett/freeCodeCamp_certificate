@@ -10,7 +10,9 @@ export function AppRoutes() {
       path: "/",
       element: (
         <div>
-          <Link to="/app">Start</Link>
+          <Link to="/app" data-testid="start-app-btn">
+            Start
+          </Link>
         </div>
       ),
     },

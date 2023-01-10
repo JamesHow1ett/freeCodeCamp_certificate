@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { useNavigate } from "react-router";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowUp } from "@fortawesome/free-solid-svg-icons";
+import TerminalXTerm from "../terminal/components/Terminal";
 
 const arrowUpIcon = <FontAwesomeIcon icon={faArrowUp} />;
 
@@ -67,7 +68,7 @@ function MainLayout({ children }) {
               type="button"
               className="p-3 border-2 border-black bg-emerald-700 text-white rounded-md hover:bg-emerald-900"
             >
-              Run Tests
+              Setup Tests
             </button>
           </div>
         </div>
@@ -77,13 +78,7 @@ function MainLayout({ children }) {
           {children}
         </div>
         {hasTestsResults && (
-          <div
-            id="project-tests"
-            ref={testsResultsRef}
-            className="p-4 h-[300px] bg-black text-white font-mono"
-          >
-            Tests results will be here
-          </div>
+          <TerminalXTerm testsPath="cd ../freaCodeCamp_certificate/ && npm run test" />
         )}
       </main>
       {hasTestsResults && (
