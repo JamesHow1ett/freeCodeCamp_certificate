@@ -4,6 +4,7 @@ const instance = axios.create({
   baseURL: "https://goquotes-api.herokuapp.com/api/v1/",
   headers: {
     Accept: "application/json",
+    "Access-Control-Allow-Origin": "*",
   },
 });
 
