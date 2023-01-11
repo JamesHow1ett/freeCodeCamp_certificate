@@ -1,42 +1,69 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { useNavigate } from "react-router";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowUp } from "@fortawesome/free-solid-svg-icons";
 import TerminalXTerm from "../terminal/components/Terminal";
+import { optionsList } from "./utils/utils";
 
 const arrowUpIcon = <FontAwesomeIcon icon={faArrowUp} />;
 
+// need this while development
+const PATH_TO_PROJECT_FROM_SERVER = "../freaCodeCamp_certificate";
+const createTestPath = (path) =>
+  `cd ${PATH_TO_PROJECT_FROM_SERVER}/${path} && npm run test ${path}`;
+
 function MainLayout({ children }) {
-  const [hasTestsResults, setHasTestResults] = useState(false);
+  const [hasTestsSetupedResults, setHasTestSetupedResults] = useState(false);
+  const [isRenderedProject, setIsRenderedProject] = useState(false);
   const [selectedProject, setSelectedProject] = useState("/app");
+  const [testPath, setTestPath] = useState("");
   const navigate = useNavigate();
-  const testsResultsRef = useRef();
 
   useEffect(() => {
-    if (selectedProject === "/app") {
-      setHasTestResults(false);
-      navigate(selectedProject);
+    if (hasTestsSetupedResults) {
+      document.body.scrollIntoView({ block: "end", behavior: "smooth" });
     }
-  }, [navigate, selectedProject]);
+  }, [hasTestsSetupedResults]);
 
-  useEffect(() => {
-    if (testsResultsRef.current && hasTestsResults) {
-      testsResultsRef.current.scrollIntoView({ position: "start", behavior: "smooth" });
+  const handleSelect = (event) => {
+    const [selectedOption] = event.target.selectedOptions;
+    const path = selectedOption.dataset.testPath;
+
+    if (path) {
+      setTestPath(createTestPath(path));
+    } else {
+      setTestPath("");
     }
-  }, [hasTestsResults]);
 
-  const handleSelect = (event) => setSelectedProject(event.target.value);
+    setSelectedProject(event.target.value);
+    setHasTestSetupedResults(false);
+    setIsRenderedProject(false);
+  };
 
-  const renderProject = () => navigate(selectedProject);
+  const renderProject = () => {
+    setIsRenderedProject(true);
+    setHasTestSetupedResults(false);
+    navigate(selectedProject);
+  };
 
-  const testProject = () => {
-    setHasTestResults((prevState) => !prevState);
+  const setupTestProject = () => {
+    if (!isRenderedProject) {
+      return;
+    }
+
+    setHasTestSetupedResults((prevState) => !prevState);
   };
 
   const goToTop = () => {
     document.body.scrollIntoView({ position: "start", behavior: "smooth" });
   };
+
+  const optionsItems = optionsList.map((o) => (
+    <option key={o.route} value={o.route} data-test-path={o.testPath}>
+      {o.text}
+    </option>
+  ));
 
   return (
     <div className="flex">
@@ -48,25 +75,22 @@ function MainLayout({ children }) {
             value={selectedProject}
             onChange={handleSelect}
           >
-            <option value="/app">None</option>
-            <option value="/app/random-quotes">Random Quotes</option>
-            <option value="/app/markdown-previewer">Markdowm Previewer</option>
-            <option value="/app/drum-pad">Drum Pad</option>
-            <option value="/app/js-calculator">JS Calculator</option>
-            <option value="/app/25-clock">25 + 5 Clock</option>
+            {optionsItems}
           </select>
           <div className="flex gap-5 mt-5">
             <button
               onClick={renderProject}
               type="button"
-              className="p-3 border-2 border-black bg-emerald-700 text-white rounded-md hover:bg-emerald-900"
+              disabled={isRenderedProject}
+              className="p-3 border-2 border-black bg-emerald-700 text-white rounded-md enabled:hover:bg-emerald-900 disabled:opacity-25"
             >
               Render
             </button>
             <button
-              onClick={testProject}
+              onClick={setupTestProject}
               type="button"
-              className="p-3 border-2 border-black bg-emerald-700 text-white rounded-md hover:bg-emerald-900"
+              disabled={!isRenderedProject}
+              className="p-3 border-2 border-black bg-emerald-700 text-white rounded-md enabled:hover:bg-emerald-900 disabled:opacity-25"
             >
               Setup Tests
             </button>
@@ -77,11 +101,9 @@ function MainLayout({ children }) {
         <div id="project" className="flex-1">
           {children}
         </div>
-        {hasTestsResults && (
-          <TerminalXTerm testsPath="cd ../freaCodeCamp_certificate/ && npm run test" />
-        )}
+        {hasTestsSetupedResults && <TerminalXTerm testsPath={testPath} />}
       </main>
-      {hasTestsResults && (
+      {hasTestsSetupedResults && (
         <button
           onClick={goToTop}
           type="button"

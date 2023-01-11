@@ -40,6 +40,7 @@ function TextContainer({ title, isPreview }) {
   const textElement = isPreview ? (
     <div
       id="preview"
+      data-testid="preview"
       style={{ minHeight: "500px" }}
       className="px-2 py-2 bg-teal-100 h-full"
       dangerouslySetInnerHTML={{
@@ -49,6 +50,7 @@ function TextContainer({ title, isPreview }) {
   ) : (
     <textarea
       id="editor"
+      data-testid="editor"
       className="h-full px-2 py-2 bg-teal-100"
       onChange={handleMarkdowmInput}
       value={markdownText}
@@ -66,10 +68,16 @@ function TextContainer({ title, isPreview }) {
       };
 
   return (
-    <div className="flex flex-col border border-black" style={textContainerStyles}>
+    <div
+      className="flex flex-col border border-black"
+      style={textContainerStyles}
+      data-testid="text-container"
+    >
       <div className="flex justify-between px-2 py-2 bg-teal-500">
-        <span className="font-bold">{title}</span>
-        <button type="button" onClick={handleToogleExpand}>
+        <span className="font-bold" data-testid="title">
+          {title}
+        </span>
+        <button type="button" data-testid="expand-btn" onClick={handleToogleExpand}>
           {expandIcon}
         </button>
       </div>

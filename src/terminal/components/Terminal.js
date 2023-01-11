@@ -28,7 +28,7 @@ function TerminalXTerm({ testsPath }) {
     socket.current.send(`${testsPath} \r`);
   }
 
-  // FIXME: better styles for btn
+  // FIXME: write better styles
   const runTestsBtn = (
     <button
       type="button"
@@ -45,7 +45,7 @@ function TerminalXTerm({ testsPath }) {
         id="term-test-id"
         ref={terminalContainer}
         style={{
-          width: "800px",
+          width: "100vw",
           height: "400px",
           backgroundColor: "black",
           color: "white",
