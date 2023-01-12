@@ -1,42 +1,20 @@
-import axios from "axios";
+import { mockQuotes } from "./utils/utils";
 
-const instance = axios.create({
-  baseURL: "https://goquotes-api.herokuapp.com/api/v1/",
-  headers: {
-    Accept: "application/json",
-  },
-});
+function getMockQuotes(path) {
+  return new Promise((resolve, reject) => {
+    if (!path) {
+      reject(new Error("Path is required"));
+    }
 
-const mockQuotes = [
-  {
-    id: 1,
-    text: "Hello World",
-    author: "Me",
-    tag: "patience",
-  },
-  {
-    id: 2,
-    text: "Alinochka very vrednaya",
-    author: "DA",
-    tag: "marriage",
-  },
-  {
-    id: 3,
-    text: "Make money, don't make love",
-    author: "Some Author",
-    tag: "money",
-  },
-  {
-    id: 4,
-    text: "Love is hard",
-    author: "Me",
-    tag: "motivational",
-  },
-];
+    setTimeout(() => {
+      resolve({ data: { quotes: mockQuotes } });
+    }, 500);
+  });
+}
 
 export const getQuotes = async () => {
   try {
-    const result = await instance.get("random?count=50");
+    const result = await getMockQuotes("/random?count=50");
 
     return result.data;
   } catch (error) {

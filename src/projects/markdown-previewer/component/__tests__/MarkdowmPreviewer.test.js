@@ -43,7 +43,7 @@ describe("MarkdowmPreviewer", () => {
     expect(previewerTitle).toHaveTextContent("Preview");
   });
 
-  it("should toogle expand editor on click expand btn", async () => {
+  it("should toogle expand editor on click 'expand' btn", async () => {
     render(
       <Provider store={store}>
         <MarkdowmPreviewer />
@@ -64,7 +64,7 @@ describe("MarkdowmPreviewer", () => {
     expect(editorWrapper.style.height).toBe("300px");
   });
 
-  it("should toogle expand previewer on click expand btn", async () => {
+  it("should toogle expand previewer on click 'expand' btn", async () => {
     render(
       <Provider store={store}>
         <MarkdowmPreviewer />
