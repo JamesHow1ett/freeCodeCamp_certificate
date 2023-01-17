@@ -1,5 +1,6 @@
 import { Terminal } from "xterm";
 import { AttachAddon } from "xterm-addon-attach";
+import { FitAddon } from "xterm-addon-fit";
 
 const xtermjsTheme = {
   foreground: "#F8F8F8",
@@ -23,7 +24,13 @@ const xtermjsTheme = {
   brightWhite: "#FFFFFF",
 };
 
-export const createTerminal = (webSocket) => {
+/**
+ *
+ * @param {HTMLElement} container
+ * @param {WebSocket?} socket
+ */
+export const createTerminal = (container, socket) => {
+  const addons = {};
   const isWindows = !navigator.userAgent.includes("Linux");
 
   const terminal = new Terminal({
@@ -33,14 +40,24 @@ export const createTerminal = (webSocket) => {
     theme: xtermjsTheme,
   });
 
-  if (webSocket) {
-    const attachAddon = new AttachAddon(webSocket);
+  const fitAddon = new FitAddon();
+  addons.fit.instance = fitAddon;
 
-    terminal.loadAddon(attachAddon);
+  if (socket) {
+    const attachAddon = new AttachAddon(socket);
+    addons.attach.instance = attachAddon;
   }
+
+  Object.keys(addons).forEach((name) => {
+    const addon = addons[name];
+    terminal.loadAddon(addon.instance);
+  });
 
   // eslint-disable-next-line no-underscore-dangle
   terminal._initialized = true;
+
+  terminal.open(container);
+  addons.fit.instance.fit();
 
   return terminal;
 };

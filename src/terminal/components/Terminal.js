@@ -18,14 +18,13 @@ function TerminalXTerm({ testsPath }) {
     fetchTerminalSocket()
       .then(({ socketURL }) => {
         socket.current = new WebSocket(socketURL);
-        terminal.current = createTerminal(socket.current);
-        terminal.current.open(terminalContainer.current);
+
+        terminal.current = createTerminal(terminalContainer.current, socket.current);
         terminal.current.write("");
       })
       .catch(() => {
         setError(true);
-        terminal.current = createTerminal();
-        terminal.current.open(terminalContainer.current);
+        terminal.current = createTerminal(terminalContainer.current, socket.current);
         terminal.current.write("Server with tests doesn't respond. Please try again leter.");
       });
 
@@ -71,7 +70,7 @@ function TerminalXTerm({ testsPath }) {
         style={{
           width: "100%",
           height: "400px",
-          backgroundColor: "black",
+          backgroundColor: "#2d2f2c",
           color: "white",
         }}
       />
