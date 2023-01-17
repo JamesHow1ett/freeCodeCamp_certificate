@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { INITIAL_STATE, DIVIDE_TO_ZERO_ERROR_TEXT } from "./utils/constants";
-import { calculate, isOperator, isNumber, invertNumber } from "../utils/calculator";
+import { calculate, isOperator, isNumber, invertNumber } from "../calculator/calculator";
 
 const calculatorSlice = createSlice({
   name: "calculator",

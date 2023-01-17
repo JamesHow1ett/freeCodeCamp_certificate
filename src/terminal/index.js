@@ -32,9 +32,13 @@ export const createTerminal = (webSocket) => {
     fontFamily: '"Fira Code", courier-new, courier, monospace, "Powerline Extra Symbols"',
     theme: xtermjsTheme,
   });
-  const attachAddon = new AttachAddon(webSocket);
 
-  terminal.loadAddon(attachAddon);
+  if (webSocket) {
+    const attachAddon = new AttachAddon(webSocket);
+
+    terminal.loadAddon(attachAddon);
+  }
+
   // eslint-disable-next-line no-underscore-dangle
   terminal._initialized = true;
 

@@ -4,27 +4,30 @@ import { useNavigate } from "react-router";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowUp } from "@fortawesome/free-solid-svg-icons";
 import TerminalXTerm from "../terminal/components/Terminal";
-import { optionsList } from "./utils/utils";
+import { optionsList, createTestPath } from "./utils/utils";
 
 const arrowUpIcon = <FontAwesomeIcon icon={faArrowUp} />;
 
 // need this while development
-const PATH_TO_PROJECT_FROM_SERVER = "../freaCodeCamp_certificate";
-const createTestPath = (path) =>
-  `cd ${PATH_TO_PROJECT_FROM_SERVER}/${path} && npm run test ${path}`;
 
 function MainLayout({ children }) {
-  const [hasTestsSetupedResults, setHasTestSetupedResults] = useState(false);
+  const [hasTestsSetuped, setHasTestSetuped] = useState(false);
   const [isRenderedProject, setIsRenderedProject] = useState(false);
   const [selectedProject, setSelectedProject] = useState("/app");
   const [testPath, setTestPath] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (hasTestsSetupedResults) {
+    if (selectedProject === "/app" && !isRenderedProject) {
+      navigate("/app");
+    }
+  }, [selectedProject, isRenderedProject, navigate]);
+
+  useEffect(() => {
+    if (hasTestsSetuped) {
       document.body.scrollIntoView({ block: "end", behavior: "smooth" });
     }
-  }, [hasTestsSetupedResults]);
+  }, [hasTestsSetuped]);
 
   const handleSelect = (event) => {
     const [selectedOption] = event.target.selectedOptions;
@@ -37,13 +40,13 @@ function MainLayout({ children }) {
     }
 
     setSelectedProject(event.target.value);
-    setHasTestSetupedResults(false);
+    setHasTestSetuped(false);
     setIsRenderedProject(false);
   };
 
   const renderProject = () => {
     setIsRenderedProject(true);
-    setHasTestSetupedResults(false);
+    setHasTestSetuped(false);
     navigate(selectedProject);
   };
 
@@ -52,7 +55,7 @@ function MainLayout({ children }) {
       return;
     }
 
-    setHasTestSetupedResults((prevState) => !prevState);
+    setHasTestSetuped(true);
   };
 
   const goToTop = () => {
@@ -89,10 +92,10 @@ function MainLayout({ children }) {
             <button
               onClick={setupTestProject}
               type="button"
-              disabled={!isRenderedProject}
+              disabled={!isRenderedProject || selectedProject === "/app"}
               className="p-3 border-2 border-black bg-emerald-700 text-white rounded-md enabled:hover:bg-emerald-900 disabled:opacity-25"
             >
-              Setup Tests
+              {hasTestsSetuped ? "Unmount Tests" : "Setup Tests"}
             </button>
           </div>
         </div>
@@ -101,9 +104,9 @@ function MainLayout({ children }) {
         <div id="project" className="flex-1">
           {children}
         </div>
-        {hasTestsSetupedResults && <TerminalXTerm testsPath={testPath} />}
+        {hasTestsSetuped && <TerminalXTerm testsPath={testPath} />}
       </main>
-      {hasTestsSetupedResults && (
+      {hasTestsSetuped && (
         <button
           onClick={goToTop}
           type="button"

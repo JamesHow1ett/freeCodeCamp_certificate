@@ -11,7 +11,13 @@ const MATHS = {
   "*": (a, b) => a * b,
 };
 
-export const invertNumber = (number) => number * -1;
+export const invertNumber = (number) => {
+  if (!number) {
+    return 0;
+  }
+
+  return number * -1;
+};
 
 const OPERATORS_PRIORITY = {
   "/": 2,
@@ -34,7 +40,7 @@ export const isNumber = (char) =>
  * @param {Array} rpn - Revers Polish Notaton
  * @returns {Number} Calculated Revers Polish Notaton
  */
-function calculateReversePolishNotation(rpn) {
+export function calculateReversePolishNotation(rpn) {
   const LAST_TWO_ITEMS = -2;
   const stack = [];
 
@@ -83,7 +89,7 @@ function calculateReversePolishNotation(rpn) {
  * @param {Array} expression
  * @returns {Array} Revers Polish Notaton
  */
-function parseExpression(expression) {
+export function parseExpression(expression) {
   const stack = [];
   const rpn = [];
 

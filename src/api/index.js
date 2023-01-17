@@ -4,8 +4,10 @@ const instance = axios.create({
   baseURL: "http://127.0.0.1:3001",
 });
 
-export const getTerminalPid = async () => {
-  const response = await instance.post("/terminals");
+export const fetchTerminalSocket = async () => {
+  const { data } = await instance.post("/terminals");
 
-  return response;
+  const socketURL = new URL(`ws://127.0.0.1:3001/terminals/${data.terminalPid}`);
+
+  return { socketURL };
 };

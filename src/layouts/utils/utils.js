@@ -30,3 +30,9 @@ export const optionsList = [
     testPath: "src/projects/25clock",
   },
 ];
+
+const PATH_TO_PROJECT_FROM_SERVER = "../freaCodeCamp_certificate";
+export const createTestPath = (path) => ({
+  dirname: PATH_TO_PROJECT_FROM_SERVER,
+  path,
+});
