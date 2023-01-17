@@ -55,7 +55,7 @@ function MainLayout({ children }) {
       return;
     }
 
-    setHasTestSetuped(true);
+    setHasTestSetuped((prevState) => !prevState);
   };
 
   const goToTop = () => {
