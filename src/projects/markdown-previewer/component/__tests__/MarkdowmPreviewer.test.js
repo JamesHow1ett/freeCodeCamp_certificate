@@ -1,10 +1,26 @@
 import React from "react";
 import { Provider } from "react-redux";
-import { render, screen, fireEvent, within } from "@testing-library/react";
+import { configureStore } from "@reduxjs/toolkit";
+import { render, screen, fireEvent, within, cleanup } from "@testing-library/react";
 import MarkdowmPreviewer from "../MarkdowmPreviewer";
-import { store } from "../../store";
+import markdownReducer from "../../store/markdownReducer";
 
 describe("MarkdowmPreviewer", () => {
+  let store = null;
+
+  beforeEach(() => {
+    store = configureStore({
+      reducer: {
+        markdown: markdownReducer,
+      },
+    });
+  });
+
+  afterEach(() => {
+    cleanup();
+    store = null;
+  });
+
   it("should render editor", async () => {
     render(
       <Provider store={store}>

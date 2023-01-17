@@ -1,10 +1,26 @@
 import React from "react";
 import { Provider } from "react-redux";
-import { render, screen, fireEvent, within, act } from "@testing-library/react";
+import { configureStore } from "@reduxjs/toolkit";
+import { render, screen, fireEvent, within, act, cleanup } from "@testing-library/react";
 import QuoteMachine from "../QuoteMachine";
-import { store } from "../../store";
+import quoteReducer from "../../store/quoteReducer";
 
 describe("Random Quote Machine", () => {
+  let store = null;
+
+  beforeEach(() => {
+    store = configureStore({
+      reducer: {
+        quote: quoteReducer,
+      },
+    });
+  });
+
+  afterEach(() => {
+    cleanup();
+    store = null;
+  });
+
   it("should render loading while fetching quotes", async () => {
     render(
       <Provider store={store}>
