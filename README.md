@@ -1,70 +1,71 @@
-# Getting Started with Create React App
+# Front-End Development Libraries Certification
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This project contains all projects from Front-End Libraries Certificate
 
-## Available Scripts
+## Features
 
-In the project directory, you can run:
+- Select project from selector
+- Setup project tests
+- Run tests in tests server with terminal use expirience
 
-### `npm start`
+## Projects
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+- [Random Quote Machine](#random-quote-machine)
+- [Markdown Previewer](#markdown-previewer)
+- [Drum Machine](#drum-machine)
+- [JaveScript Calculator](#javescript-calculator)
+- [25 + 5 Clock](#25--5-clock)
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### Random Quote Machine
 
-### `npm test`
+This application fetch random (mocked) quotes wich shows to you
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+#### Features
 
-### `npm run build`
+- Fetch list of quotes
+- Get next quote from list
+- Tweet quote with one click
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### Markdown Previewer
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+This application is simple markdown editor where you can write markdown and see parsed text in real-time
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+#### Features
 
-### `npm run eject`
+- Markdown editor
+- Markdown previewer
+- Synchronized editor and previewer
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+### Drum Machine
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+This application is emulate drum pad
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+#### Features
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+- Power On/Off drum pad
+- Click on buttons to play correspond drum sound
+- Use keyboard to play on drum pad
+- Change drum pad volume
 
-## Learn More
+### JaveScript Calculator
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+This is a basically calculator with use Formula/Expression Logic wich means 2+2\*2=6
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+#### Features
 
-### Code Splitting
+- Add digits
+- Substract digits
+- Multiple digits
+- Divide digits
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+### 25 + 5 Clock
 
-### Analyzing the Bundle Size
+This application allow you to run simple session countdown wich play sound at the end and starts break countdown
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+#### Features
 
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+- Increase/Decrease Break length up 1 to 60 minutes
+- Increase/Decrease Session length up 1 to 60 minutes
+- Start/Stop countdown
+- Refresh to initial values
+- Play sound at the end
