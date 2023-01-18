@@ -3,7 +3,7 @@
 /* eslint-disable jsx-a11y/media-has-caption */
 import React, { useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setDisplay, tooglePowerOn, setVolume } from "../store/drumReducer";
+import { setDisplay, tooglePowerOn, setVolume, drumSelector } from "../store/drumReducer";
 import { useEventListener } from "../hooks/useEventListener";
 import { availableKeys } from "../utils/utils";
 
@@ -13,7 +13,7 @@ export const btnStyles =
   "bg-stone-500 mt-3 relative float-left w-[80px] h-[80px] mr-3 rounded-lg pt-[32px] cursor-pointer shadow-xl";
 
 function DrumPad() {
-  const { isPowerOn, display, volume } = useSelector((store) => store.drum);
+  const { isPowerOn, display, volume } = useSelector(drumSelector);
   const dispatch = useDispatch();
 
   const handlerDrumKeyUp = useCallback(

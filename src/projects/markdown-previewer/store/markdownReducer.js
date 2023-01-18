@@ -29,4 +29,6 @@ const markdownPreviewerSlice = createSlice({
 export const { setMarkdownText, toogleIsExpandedPreview, toogleIsExpandedMarkdown } =
   markdownPreviewerSlice.actions;
 
+export const markdownSelector = (state) => state.markdown;
+
 export default markdownPreviewerSlice.reducer;

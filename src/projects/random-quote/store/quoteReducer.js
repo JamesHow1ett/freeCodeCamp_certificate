@@ -53,4 +53,6 @@ const quoteSlice = createSlice({
 
 export const { nextQuote } = quoteSlice.actions;
 
+export const quoteSelector = (store) => store.quote;
+
 export default quoteSlice.reducer;

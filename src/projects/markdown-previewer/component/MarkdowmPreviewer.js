@@ -1,9 +1,9 @@
 import React from "react";
-import { useSelector } from "react-redux";
+import { useSelector, markdownSelector } from "react-redux";
 import TextContainer from "./TextContainer";
 
 function MarkdowmPreviewer() {
-  const { isExpandedPreview } = useSelector((store) => store.markdown);
+  const { isExpandedPreview } = useSelector(markdownSelector);
 
   return (
     <div className="flex flex-col items-center py-6 bg-teal-300">
