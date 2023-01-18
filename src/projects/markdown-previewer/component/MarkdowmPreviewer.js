@@ -1,5 +1,6 @@
 import React from "react";
-import { useSelector, markdownSelector } from "react-redux";
+import { useSelector } from "react-redux";
+import { markdownSelector } from "../store/markdownReducer";
 import TextContainer from "./TextContainer";
 
 function MarkdowmPreviewer() {
