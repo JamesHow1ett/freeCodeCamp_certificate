@@ -23,6 +23,7 @@ import {
 
 import beep from "../assets/beep.ogg";
 
+const ONE_SECOND = 1000;
 const ICON_SIZE = "lg";
 
 const ArrowDownIcon = <FontAwesomeIcon icon={faArrowDown} size={ICON_SIZE} />;
@@ -64,7 +65,7 @@ function ClockTimer() {
 
     const interval = setInterval(() => {
       dispatch(tickTimer());
-    }, 1000);
+    }, ONE_SECOND);
 
     dispatch(startTimer(interval));
   };
@@ -93,21 +94,25 @@ function ClockTimer() {
       <div className="font-bold text-4xl">25 + 5 Clock</div>
       <div className="flex gap-[50px] mt-10 mb-10">
         <div className="flex flex-col gap-5">
-          <div id="break-label">Break Length</div>
+          <div id="break-label" data-testid="break-label">
+            Break Length
+          </div>
           <div className="flex items-center justify-center gap-4">
             <button
               id="break-decrement"
+              data-testid="break-decrement"
               className="hover:text-teal-400 transition ease-in-out"
               type="button"
               onClick={decrementBreak}
             >
               {ArrowDownIcon}
             </button>
-            <div className="min-w-[35px]" id="break-length">
+            <div className="min-w-[35px]" id="break-length" data-testid="break-length">
               {breakLength}
             </div>
             <button
               id="break-increment"
+              data-testid="break-increment"
               className="hover:text-teal-400 transition ease-in-out"
               type="button"
               onClick={incrementBreak}
@@ -117,21 +122,25 @@ function ClockTimer() {
           </div>
         </div>
         <div className="flex flex-col gap-5">
-          <div id="session-label">Session Length</div>
+          <div id="session-label" data-testid="session-label">
+            Session Length
+          </div>
           <div className="flex items-center justify-center gap-4">
             <button
               id="session-decrement"
+              data-testid="session-decrement"
               className="hover:text-teal-400 transition ease-in-out"
               type="button"
               onClick={decrementSession}
             >
               {ArrowDownIcon}
             </button>
-            <div className="min-w-[35px]" id="session-length">
+            <div className="min-w-[35px]" id="session-length" data-testid="session-length">
               {sessionLength}
             </div>
             <button
               id="session-increment"
+              data-testid="session-increment"
               className="hover:text-teal-400 transition ease-in-out"
               type="button"
               onClick={incrementSession}
@@ -147,7 +156,11 @@ function ClockTimer() {
           style={{ color: isLessThanMinute ? "#a50d0d" : "#fff" }}
         >
           <div id="timer-label">{timerTitle}</div>
-          <div id="time-left" className="font-[digital] text-[45px] normal-nums">
+          <div
+            id="time-left"
+            data-testid="time-left"
+            className="font-[digital] text-[45px] normal-nums"
+          >
             {timeLeftParsed}
           </div>
         </div>
@@ -155,6 +168,7 @@ function ClockTimer() {
       <div className="flex gap-3">
         <button
           id="start_stop"
+          data-testid="start_stop"
           className="hover:text-teal-400 transition ease-in-out"
           type="button"
           onClick={startStop}
@@ -163,6 +177,7 @@ function ClockTimer() {
         </button>
         <button
           id="reset"
+          data-testid="reset"
           className="hover:text-teal-400 transition ease-in-out"
           type="button"
           onClick={reset}
