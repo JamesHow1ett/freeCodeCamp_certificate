@@ -111,15 +111,15 @@ describe("Random Quote Machine", () => {
     const quoteAuthor = await within(quoteBox).findByTestId("author");
 
     expect(quoteText).toBeInTheDocument();
-    expect(quoteText.textContent).toBe("Love is hard");
-    expect(quoteAuthor.textContent).toMatch("Me");
+    expect(quoteText).toHaveTextContent("Love is hard");
+    expect(quoteAuthor).toHaveTextContent(/Me$/);
 
     fireEvent.click(newQuoteBtn);
 
     quoteBox = await screen.findByTestId("quote-box");
 
     expect(quoteText).toBeInTheDocument();
-    expect(quoteText.textContent).toBe("Make money, don't make love");
-    expect(quoteAuthor.textContent).toMatch("Some Author");
+    expect(quoteText).toHaveTextContent("Make money, don't make love");
+    expect(quoteAuthor).toHaveTextContent(/Some Author$/);
   });
 });
