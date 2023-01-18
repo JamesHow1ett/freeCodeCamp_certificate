@@ -8,7 +8,8 @@ import { useEventListener } from "../hooks/useEventListener";
 import { availableKeys } from "../utils/utils";
 
 const TIME_TO_REMOVE_ACTIVE_CLASS = 300;
-const btnStyles =
+// export for testing
+export const btnStyles =
   "bg-stone-500 mt-3 relative float-left w-[80px] h-[80px] mr-3 rounded-lg pt-[32px] cursor-pointer shadow-xl";
 
 function DrumPad() {
@@ -77,6 +78,7 @@ function DrumPad() {
         <div
           className="w-[332px] h-[272px] inline-block"
           data-pad-wrapper="true"
+          data-testid="pad-wrapper"
           onClick={handlerDrumClick}
         >
           <div className={btnStyles} id="Heater-1">
@@ -154,13 +156,16 @@ function DrumPad() {
         </div>
         <div className="flex flex-col items-center gap-[20px] w-[240px]">
           <div className="flex flex-col items-center w-[100px]">
-            <p className="mt-0 mb-0">Power</p>
+            <p data-testid="power-on-title" className="mt-0 mb-0">
+              Powered {isPowerOn ? "On" : "Off"}
+            </p>
             <div className="w-[50px] p-1 bg-black">
               <div
                 className="bg-blue-600 border border-black w-[23px] h-[19px]"
                 role="button"
                 tabIndex={0}
                 aria-label="power On/Off"
+                data-testid="power-on"
                 style={{ float: isPowerOn ? "right" : "left" }}
                 onClick={() => dispatch(tooglePowerOn())}
               />
@@ -168,13 +173,17 @@ function DrumPad() {
           </div>
           <p
             id="display"
+            data-testid="display"
             className="w-[200px] bg-gray-500 m-4 mx-auto text-center py-2 min-h-[40px]"
           >
             {display}
           </p>
           <div className="flex gap-2">
-            <span className="w-[25px]">{volume}</span>
+            <span data-testid="volume-value" className="w-[25px]">
+              {volume}
+            </span>
             <input
+              data-testid="volume"
               max="1"
               min="0"
               step="0.01"
