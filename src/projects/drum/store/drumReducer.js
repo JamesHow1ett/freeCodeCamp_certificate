@@ -24,4 +24,6 @@ const drumSlice = createSlice({
 
 export const { setDisplay, tooglePowerOn, setVolume } = drumSlice.actions;
 
+export const drumSelector = (state) => state.drum;
+
 export default drumSlice.reducer;

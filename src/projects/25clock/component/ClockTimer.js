@@ -18,6 +18,7 @@ import {
   stopTimer,
   tickTimer,
   refreshTimer,
+  timerSelector,
 } from "../store/timerReducer";
 
 import beep from "../assets/beep.ogg";
@@ -45,7 +46,7 @@ function ClockTimer() {
     isBreakStarted,
     isSessionStarted,
     isOver,
-  } = useSelector((state) => state.timer);
+  } = useSelector(timerSelector);
   const dispatch = useDispatch();
   const audioRef = useRef();
 

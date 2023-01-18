@@ -1,13 +1,18 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { clearState, setInput, calculateExpression } from "../store/calculatorReducer";
+import {
+  clearState,
+  setInput,
+  calculateExpression,
+  calculatorSelector,
+} from "../store/calculatorReducer";
 
 // export for testing
 export const defaultBtnClasses =
   "relative h-[65px] w-[80px] text-white outline outline-1 outline-black border-none bg-[#4d4d4d] font-mono text-xl cursor-default hover:text-black hover:outline hover:outline-[0.05rem] hover:outline-[#808080] hover:z-[3]";
 
 function Calculator() {
-  const { input, display } = useSelector((store) => store.calculator);
+  const { input, display } = useSelector(calculatorSelector);
   const dispatch = useDispatch();
 
   const handleClearState = () => dispatch(clearState());

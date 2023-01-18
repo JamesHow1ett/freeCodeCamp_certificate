@@ -8,6 +8,7 @@ import {
   setMarkdownText,
   toogleIsExpandedPreview,
   toogleIsExpandedMarkdown,
+  markdownSelector,
 } from "../store/markdownReducer";
 
 import "./styles/index.css";
@@ -16,9 +17,8 @@ const maximazeIcon = <FontAwesomeIcon icon={faMaximize} />;
 const minimizeIcon = <FontAwesomeIcon icon={faMinimize} />;
 
 function TextContainer({ title, isPreview }) {
-  const { markdownText, parsedMarkdowm, isExpandedPreview, isExpandedMarkdowm } = useSelector(
-    (store) => store.markdown,
-  );
+  const { markdownText, parsedMarkdowm, isExpandedPreview, isExpandedMarkdowm } =
+    useSelector(markdownSelector);
   const dispatch = useDispatch();
 
   const handleToogleExpand = () => {

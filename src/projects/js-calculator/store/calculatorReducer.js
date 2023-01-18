@@ -127,4 +127,6 @@ const calculatorSlice = createSlice({
 
 export const { clearState, setInput, calculateExpression } = calculatorSlice.actions;
 
+export const calculatorSelector = (store) => store.calculator;
+
 export default calculatorSlice.reducer;

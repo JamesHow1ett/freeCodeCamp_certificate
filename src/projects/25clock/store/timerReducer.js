@@ -133,4 +133,6 @@ export const {
   refreshTimer,
 } = timerSlice.actions;
 
+export const timerSelector = (state) => state.timer;
+
 export default timerSlice.reducer;

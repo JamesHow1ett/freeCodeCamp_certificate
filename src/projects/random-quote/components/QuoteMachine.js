@@ -2,14 +2,14 @@ import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faQuoteLeft, faDove } from "@fortawesome/free-solid-svg-icons";
-import { nextQuote, fetchRandomQuotes } from "../store/quoteReducer";
+import { nextQuote, fetchRandomQuotes, quoteSelector } from "../store/quoteReducer";
 import { qouteTopicColors } from "../utils/constants";
 
 const quoteIcon = <FontAwesomeIcon icon={faQuoteLeft} size="2x" />;
 const twitterIcon = <FontAwesomeIcon icon={faDove} size="lg" />;
 
 function QuoteMachine() {
-  const { loading, currentQuote } = useSelector((store) => store.quote);
+  const { loading, currentQuote } = useSelector(quoteSelector);
   const dispatch = useDispatch();
 
   useEffect(() => {
